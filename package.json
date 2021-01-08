@@ -1,8 +1,8 @@
 {
   "name": "browser-headers",
   "version": "0.4.1",
-  "main": "dist/browser-headers.js",
-  "browser": "dist/browser-headers.umd.js",
+  "main": "dist/js/browser-headers.js",
+  "browser": "dist/js/browser-headers.umd.js",
   "types": "dist/typings/index.d.ts",
   "repository": "https://github.com/improbable-eng/js-browser-headers",
   "license": "Apache-2.0",
@@ -11,35 +11,47 @@
     "fetch"
   ],
   "scripts": {
-    "prepublish": "npm run clean && npm run build:lib",
-    "clean": "rm -rf build && rm -rf lib && rm -rf dist",
-    "build:test": "webpack",
-    "build:lib": "npm run clean && webpack",
+    "clean": "rm -rf build lib dist",
+    "build:test": "npm run js:build",
+    "build:lib": "npm run js:build",
+
+    "js:transpile": "npx webpack",
+    "js:build": "npm run clean && npm run js:transpile",
+
+    "mjs:transpile": "npx tsc -p tsconfig.mjs.json",
+    "mjs:build": "npm run clean && npm run mjs:transpile",
+
+    "build": "npm run mjs:build && npm run js:transpile",
+
     "lint": "tslint -c ./tslint.json ./src/**/*.ts ./test/**/*.ts",
-    "test": "npm run build:test && karma start --single-run",
+    "test": "npx jasmine test/build/integration-tests.js",
+
+    "prepare": "npm run clean && npm run build:lib",
     "release": "./release.sh ${npm_package_version}"
   },
-  "devDependencies": {
-    "@types/node": "^7.0.5",
-    "assert": "^1.4.1",
-    "babel-core": "^6.23.1",
-    "babel-loader": "^6.3.2",
-    "babel-preset-es2015": "^6.13.2",
-    "jasmine-core": "^2.4.1",
-    "karma": "^3.0.0",
-    "karma-browserstack-launcher": "^1.3.0",
-    "karma-jasmine": "^1.0.2",
-    "karma-sourcemap-loader": "^0.3.7",
-    "ts-loader": "^2.0.1",
-    "tslint": "^4.4.2",
-    "typescript": "3.0.1",
-    "webpack": "^2.2.1",
-    "https-proxy-agent": ">=2.2.0"
+  "dependencies": {
+    "webpack": "^5.12.1"
   },
-  "dependencies": {},
   "browserify": {
     "transform": [
       "babelify"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.12.11",
+    "@types/jasmine": "^3.6.2",
+    "@types/node": "^14.14.20",
+    "assert": "^2.0.0",
+    "babel-loader": "^8.2.2",
+    "https-proxy-agent": "^5.0.0",
+    "jasmine": "git+https://github.com/ismaproco/jasmine-npm.git",
+    "jasmine-ts": "^0.3.0",
+    "karma-browserstack-launcher": "^1.6.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-jasmine": "^4.0.1",
+    "karma-source-map-support": "^1.4.0",
+    "ts-loader": "^8.0.14",
+    "tslint": "^6.1.3",
+    "webpack-cli": "^4.3.1"
   }
 }

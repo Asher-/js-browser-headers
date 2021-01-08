@@ -53,7 +53,7 @@ export function getHeaderKeys(headersAsNative: Headers): string[] {
   const asMap: {[key: string]: boolean} = {};
   const keys: string[] = [];
 
-  if (headers.keys) {
+  if (headers.keys !== undefined) {
     iterateHeadersKeys(headers, key => {
       if (!asMap[key]) {
         // Only add the key if it hasn't been added already
@@ -61,7 +61,7 @@ export function getHeaderKeys(headersAsNative: Headers): string[] {
         keys.push(key);
       }
     });
-  } else if (headers.forEach) {
+  } else if (headers.forEach !== undefined) {
     headers.forEach((_, key) => {
       if (!asMap[key]) {
         // Only add the key if it hasn't been added already

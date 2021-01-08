@@ -1,0 +1,10 @@
+{
+  "spec_dir": "test",
+  "spec_files": [
+    "BrowserHeaders.spec.ts"
+  ],
+  "helpers": [
+  ],
+  "stopSpecOnExpectationFailure": false,
+  "random": true
+}
