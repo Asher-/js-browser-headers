@@ -9,15 +9,6 @@ const TS_LOADER = {
     configFile: "tsconfig.js.json"
   }
 };
-const BABEL_LOADER = {
-  loader: 'babel-loader',
-  options: {
-    cacheDirectory: true,
-    presets: [
-      "@babel/preset-env"
-    ]
-  }
-};
 const LIB_BASE_CONFIG = {
   entry: "./src/index.ts",
   module: {
@@ -35,53 +26,23 @@ const LIB_BASE_CONFIG = {
   mode: "production",
 };
 
-module.exports = [{
-  name: 'lib-commonjs',
-  ...LIB_BASE_CONFIG,
-  output: {
-    filename: `${packageJson.name}.js`,
-    path: DIST_DIR,
-    libraryTarget: 'commonjs',
-  }
-},
-{
-  name: 'lib-umd',
-  ...LIB_BASE_CONFIG,
-  output: {
-    filename: `${packageJson.name}.umd.js`,
-    path: DIST_DIR,
-    libraryTarget: 'umd',
-  }
-},
-{
-  name: 'tests',
-  mode: "development",
-  entry: "./test/BrowserHeaders.spec.ts",
-  output: {
-    path: path.resolve(__dirname, 'test', 'build'),
-    filename: 'integration-tests.js',
+module.exports = [
+  {
+    name: 'lib-commonjs',
+    ...LIB_BASE_CONFIG,
+    output: {
+      filename: `${packageJson.name}.cjs.js`,
+      path: DIST_DIR,
+      libraryTarget: 'commonjs',
+    }
   },
-  devtool: 'source-map',
-  module: {
-    rules: [{
-        test: /\.js$/,
-        include: /src|test|node_modules/,
-        use: [
-          BABEL_LOADER
-        ],
-      },
-      {
-        test: /\.ts$/,
-        include: /src|test|node_modules/,
-        use: [
-          BABEL_LOADER,
-          TS_LOADER
-        ]
-      }
-    ]
-  },
-  plugins: [],
-  resolve: {
-    extensions: [".ts", ".js"]
+  {
+    name: 'lib-umd',
+    ...LIB_BASE_CONFIG,
+    output: {
+      filename: `${packageJson.name}.umd.js`,
+      path: DIST_DIR,
+      libraryTarget: 'umd',
+    }
   }
-}];
+];
